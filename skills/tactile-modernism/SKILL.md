@@ -117,24 +117,64 @@ of meaning. Emphasis is weight, size or the contrast key, never coloured text.
 
 Three heights, all lit from above left:
 
-- **Raised** (keys, panels, caps): a 1px `--tui-hl` line along the inside top
-  edge, a hairline edge, a short tight shadow directly below, and a softer one
-  a few pixels further down. Shadows use `rgb(var(--tui-sh) / alpha)`, so they
-  deepen on graphite.
+- **Raised** (keys, panels, caps): catches light on its top edge and casts a
+  short, tight shadow below and a soft one further down. `--tui-raised`.
 - **Level** (printing, tags): no shadow.
 - **Recessed** (fields, tracks, trays): the floor is darkest just under the
   upper wall, the upper inner wall is in shadow, and the lower inner wall and
-  the plate's lip below the cut catch the light.
+  the plate's lip below the cut catch the light. `--tui-inset` with
+  `--tui-well-fill` as the background.
 
-A key is a cap on a skirt: its side shows a few pixels below its top. Pressed
-or latched, it moves down by the skirt and sits below the plate. A pressed
-state that only darkens or only outlines is wrong.
+Use these and never invent other shadows. They read `--tui-sh`, so they deepen
+on graphite by themselves:
+
+```css
+:root, [data-finish="aluminium"] { --tui-sh-a: 0.24; --tui-grain: 0.5; }
+[data-finish="graphite"] { --tui-sh-a: 0.55; --tui-grain: 0.35; }
+:root, [data-finish] {
+  --tui-raised:
+    inset 0 1px 0 var(--tui-hl),
+    0 0 0 1px rgb(var(--tui-sh) / calc(var(--tui-sh-a) * 0.35)),
+    0 1px 1.5px rgb(var(--tui-sh) / calc(var(--tui-sh-a) * 1.2)),
+    0 5px 12px -5px rgb(var(--tui-sh) / var(--tui-sh-a));
+  --tui-inset:
+    inset 0 3px 3px -2px rgb(var(--tui-sh) / calc(var(--tui-sh-a) * 2.6)),
+    inset 0 9px 12px -9px rgb(var(--tui-sh) / calc(var(--tui-sh-a) * 1.8)),
+    inset 0 0 0 1px rgb(var(--tui-sh) / calc(var(--tui-sh-a) * 0.45)),
+    inset 0 -1px 0 color-mix(in oklab, var(--tui-hl) 60%, transparent),
+    0 1px 0 var(--tui-hl),
+    0 -1px 0 rgb(var(--tui-sh) / calc(var(--tui-sh-a) * 0.35));
+  --tui-pressed:
+    inset 0 5px 5px -4px rgb(var(--tui-sh) / calc(var(--tui-sh-a) * 3)),
+    inset 4px 0 4px -4px rgb(var(--tui-sh) / calc(var(--tui-sh-a) * 1.4)),
+    inset -4px 0 4px -4px rgb(var(--tui-sh) / calc(var(--tui-sh-a) * 1.4)),
+    0 -1px 0 rgb(var(--tui-sh) / calc(var(--tui-sh-a) * 1.3)),
+    0 1px 0 var(--tui-hl);
+  --tui-well-fill: linear-gradient(to bottom,
+    color-mix(in oklab, var(--tui-well) 86%, rgb(var(--tui-sh))), var(--tui-well) 55%);
+}
+```
+
+A key is a cap on a skirt: its side shows a few pixels below its top
+(`box-shadow: 0 3px 0 <a darker face>, var(--tui-raised)`). Pressed or
+latched, it moves down by the skirt, loses the skirt and takes
+`--tui-pressed`: it now sits below the plate, so the plate's edge shades its
+top. A pressed state that only darkens or only outlines is wrong.
 
 No glow except lamps and lit displays. No shadow that falls up or left. No
 blurred "glass" cards: the only glass is a display.
 
-Panels carry a faint grain (the bead-blast), a few percent of noise. Nothing
-else textures a panel.
+Panels carry a faint grain, the bead-blast. Nothing else textures a panel,
+and don't remove it to "clean up":
+
+```css
+.panel { position: relative; background: var(--tui-face); box-shadow: var(--tui-raised); border-radius: 12px; }
+.panel::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  opacity: var(--tui-grain);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0.28 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+```
 
 ## Printing
 
