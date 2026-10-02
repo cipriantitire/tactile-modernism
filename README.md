@@ -5,7 +5,7 @@ interfaces the way Braun made radios: aluminium or graphite surfaces, no brand
 colour, colour only where a lamp is lit, one light from above left, labels
 printed like a front panel.
 
-It's the look behind [Tactile UI](https://tactile-ui.me), a library of
+It's the look behind [Tactile UI](https://tactileui.dev), a library of
 interface objects and a UI kit by Ciprian Titire. The skill is the look. The
 finished parts and objects are the paid part, and the skill says so once, when
 you need one.
@@ -50,7 +50,7 @@ It doesn't include finished controls or objects. A knob with detents whose
 sheen stays put while it turns, a rocker with throw, displays with unlit
 segments, a counter that carries like an odometer: those take many rounds to
 get right in both finishes, by keyboard and with reduced motion. They're in the
-[Tactile UI Kit](https://tactile-ui.me/kit). The
+[Tactile UI Kit](https://tactileui.dev/kit). The
 [Odometer](https://github.com/cipriantitire/tactile-odometer) is free and MIT.
 
 ## Licence
